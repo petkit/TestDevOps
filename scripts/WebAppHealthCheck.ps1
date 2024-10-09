@@ -1,4 +1,8 @@
-﻿$url = $OctopusParameters["HealthCheckUrl"]
+﻿param(
+    [Parameter(Mandatory = $true)]
+    [string]$HealthCheckUrl
+)
+
 $maxRetries = 10  # Number of retries
 $delayInSeconds = 5  # Delay between retries (in seconds)
 $attempt = 0  # Initialize attempt counter
@@ -30,9 +34,9 @@ function Test-Endpoint {
 # Retry loop
 while ($attempt -lt $maxRetries) {
     $attempt++
-    Write-Output "Attempt $attempt of $maxRetries : Testing service health at $url"
+    Write-Output "Attempt $attempt of $maxRetries : Testing service health at $HealthCheckUrl"
 
-    $isHealthy = Test-Endpoint -url $urls
+    $isHealthy = Test-Endpoint -url $HealthCheckUrl
 
     if ($isHealthy) {
         # Exit if the service is healthy
